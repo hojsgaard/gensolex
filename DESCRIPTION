@@ -1,0 +1,12 @@
+Package: gensolex
+Type: Package
+Title: Creates exercise and solution file from rmd file
+Version: 1.0
+Date: 2024-04-17
+Author: Søren Højsgaard
+Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
+Description: Creates exercise and solution file from rmd file.
+RoxygenNote: 7.3.1
+Imports: rmarkdown
+Encoding: UTF-8
+License: GPL (>= 2)
