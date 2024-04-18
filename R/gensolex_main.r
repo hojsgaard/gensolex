@@ -7,11 +7,12 @@
 #'
 #' @importFrom tools file_ext file_path_sans_ext
 #' @importFrom rmarkdown render
-#'
+#' @examples
+#' 
 #' tf <- system.file("example", "iris.rmd", package = "gensolex")
 #' 
 #' @export
-generate_exercise_and_solution <- function(file_name, compile=TRUE) {
+gensolex <- function(file_name, compile=TRUE) {
   if (!file.exists(file_name))
     stop(cat(sprintf("fils %s does not exist\n")))
   
