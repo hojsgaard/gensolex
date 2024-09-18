@@ -9,7 +9,7 @@
 #' @importFrom rmarkdown render
 #' @examples
 #' 
-#' tf <- system.file("example", "iris.rmd", package = "gensolex")
+#' file_name <- system.file("example", "iris.rmd", package = "gensolex")
 #' 
 #' @export
 gensolex <- function(file_name, compile=TRUE) {
@@ -22,7 +22,6 @@ gensolex <- function(file_name, compile=TRUE) {
   name
   
   lns <- readLines(file_name)
-
   
   sol_lines <- grep("#+ *SOLUTION", lns)
   sol_lines
@@ -42,9 +41,11 @@ gensolex <- function(file_name, compile=TRUE) {
     lapply(seq_along(sol_lines), function(i) {
       handle_sol_code(i)
     })
-  
+  sol_code_chunks
 
-  sol_text_begin <- grep("<!--- *SOLUTION", lns)
+  sol_text_begin <- grep("<--- *SOLUTION", lns)
+  sol_text_begin
+  
   sol_text_end <- grep("--->", lns)
 
   handle_sol_text <- function(i) {
@@ -56,14 +57,15 @@ gensolex <- function(file_name, compile=TRUE) {
   }
   
   sol_text_chunks <-
-    lapply(seq_along(sol_text_begin), function(i) {
-      handle_sol_text(i)
-    })
+      lapply(seq_along(sol_text_begin), function(i) {
+          handle_sol_text(i)
+      })
 
+  sol_text_chunks
   lll <- c(sol_code_chunks, sol_text_chunks)
 
-  if (length(lll) > 0 ){
-      lns_no_sol <- lns[-unlist(c(sol_code_chunks, sol_text_chunks))]
+  if (length(lll) > 0 ) {
+      lns_no_sol <- lns[-unlist(lll)]
   } else {
       lns_no_sol <- lns
   }
@@ -78,7 +80,6 @@ gensolex <- function(file_name, compile=TRUE) {
       lns_sol[[e]] <- "*end of SOLUTION comment*"      
   }
   lns_sol
-
   
   sol_file <- file.path(paste0(name, "_solution.", ext))
   exe_file <- file.path(paste0(name, "_exercise.", ext))
@@ -93,7 +94,6 @@ gensolex <- function(file_name, compile=TRUE) {
   
   cat(sprintf("Writing files:\n %s \n %s\n", exe_file, sol_file))
   writeLines(c(extra, lns_no_sol), exe_file)
-  ## writeLines(c(extra, lns), sol_file)
   writeLines(c(extra, lns_sol), sol_file)
 
   ## if (require(rmarkdown)){
