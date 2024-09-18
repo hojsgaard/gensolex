@@ -1,0 +1,118 @@
+<!-- This file has been generated automatically from ../inst/example/lm.rmd -->
+
+<!-- time: 2024-09-18 13:03:27.739979 do not edit manually -->
+
+---
+title: "Exercise - some linear models"
+author: "Søren Højsgaard"
+format: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*SOLUTION comment*
+some text
+*end of SOLUTION comment*
+
+
+
+We will use the `palmerpenguins` data set. It is a data set with
+information on penguins. We will use the `body_mass_g` as the response
+variable and `species`, `island`, `sex`, `culmen_length_mm`,
+`culmen_depth_mm`, `flipper_length_mm`, and `year` as explanatory
+variables.
+
+```{r}
+dat <- palmerpenguins::penguins
+dat <- dat[complete.cases(dat),]
+head(dat)
+```
+
+```{r}
+library(ggplot2) 
+library(broom)
+```
+
+
+
+We ask the following question: 
+
+1. How well can we predict the body mass of a penguin based on species and flipper length?
+
+2. Are predictions improved by including other variables?
+
+We encourage you to take inspiration from the lecture slides/notes.
+
+```{r}
+pl0 <- dat |> ggplot(aes(x=flipper_length_mm, y=body_mass_g, color=species)) + geom_jitter(width=0.1)
+pl0 + geom_smooth(se=FALSE)
+```
+
+```{r}
+mm1 <- lm(body_mass_g ~ flipper_length_mm, data = dat)
+mm2 <- lm(body_mass_g ~ species, data = dat)
+mm3 <- lm(body_mass_g ~ species + flipper_length_mm, data = dat)
+mm4 <- lm(body_mass_g ~ species * flipper_length_mm, data = dat)
+```
+
+```{r}
+## SOLUTION
+pl0 + geom_line(aes(y=fitted(mm1)))
+mm1 |> tidy()
+```
+
+```{r}
+## SOLUTION
+pl0 + geom_line(aes(y=fitted(mm2)))
+mm2 |> tidy()
+```
+
+```{r}
+## SOLUTION
+pl0 + geom_line(aes(y=fitted(mm3)))
+mm3 |> tidy()
+```
+
+```{r}
+## SOLUTION
+pl0 + geom_line(aes(y=fitted(mm4)))
+mm4 |> tidy()
+```
+
+
+```{r}
+## SOLUTION
+ml <- list(mm1, mm2, mm3, mm4)
+i <- sample(nrow(dat), size=0.8*nrow(dat))
+i |> head()
+train <- dat[i,]
+test <- dat[-i,]
+```
+
+
+```{r}
+## SOLUTION
+sapply(ml, function(x) modelr::rmse(x, dat))
+ml_train <- sapply(ml, function(x) update(x, data=train))
+sapply(ml_train, function(x) modelr::rmse(x, train))
+sapply(ml_train, function(x) modelr::rmse(x, test))
+```
+
+
+
+```{r}
+## YOUR CODE
+## here is a hint
+x <- 1:10
+```
+
+
+```{r}
+## YOUR CODE
+```
+
+*SOLUTION comment*
+some text
+*end of SOLUTION comment*

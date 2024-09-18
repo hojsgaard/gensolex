@@ -1,6 +1,6 @@
-<!-- This file has been generated automatically from /home/sorenh/Dropbox/work/stat/generate_ex_sol/gensolex/inst/example/iris.rmd -->
+<!-- This file has been generated automatically from iris.rmd -->
 
-<!-- time: 2024-04-17 11:07:56.797835 do not edit manually -->
+<!-- time: 2024-09-18 12:14:46.687802 do not edit manually -->
 
 ---
 title: "Exercise"
