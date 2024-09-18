@@ -18,6 +18,8 @@ gensolex <- function(file_name, compile=TRUE) {
   
   ext  <- tools::file_ext(file_name)
   name <- tools::file_path_sans_ext(file_name)
+  ext
+  name
   
   lns <- readLines(file_name)
 
@@ -28,7 +30,7 @@ gensolex <- function(file_name, compile=TRUE) {
   backtick_lines <- grep("```", lns)
   backtick_lines
   
-  ff <- function(i) {
+  handle_sol_code <- function(i) {
     s <- sol_lines[i]
     beg <- s - 1
     backtick_lines[which(backtick_lines > s)[1]]
@@ -36,36 +38,39 @@ gensolex <- function(file_name, compile=TRUE) {
     beg:end
   }
   
-  sol_chunks <-
+  sol_code_chunks <-
     lapply(seq_along(sol_lines), function(i) {
-      ff(i)
+      handle_sol_code(i)
     })
   
-  sol_chunks
-  sol_chunks
 
-  bb <- grep("<!--- *SOLUTION", lns)
-  ee <- grep("--->", lns)
+  sol_text_begin <- grep("<!--- *SOLUTION", lns)
+  sol_text_end <- grep("--->", lns)
 
-  gg <- function(i) {
-    s <- bb[i]
+  handle_sol_text <- function(i) {
+    s <- sol_text_begin[i]
     beg <- s
-    ee[which(ee > s)[1]]
-    end <- ee[which(ee > s)[1]]
+    sol_text_end[which(sol_text_end > s)[1]]
+    end <- sol_text_end[which(sol_text_end > s)[1]]
     beg:end
   }
   
-  sol2_chunks <-
-    lapply(seq_along(bb), function(i) {
-      gg(i)
+  sol_text_chunks <-
+    lapply(seq_along(sol_text_begin), function(i) {
+      handle_sol_text(i)
     })
 
+  lll <- c(sol_code_chunks, sol_text_chunks)
 
-  lns_no_sol <- lns[-unlist(c(sol_chunks, sol2_chunks))]
-
+  if (length(lll) > 0 ){
+      lns_no_sol <- lns[-unlist(c(sol_code_chunks, sol_text_chunks))]
+  } else {
+      lns_no_sol <- lns
+  }
+  
   lns_sol <- lns
-  for (i in seq_along(sol2_chunks)){
-      x <- sol2_chunks[[i]]
+  for (i in seq_along(sol_text_chunks)){
+      x <- sol_text_chunks[[i]]
       b <- x[1]
       e <- rev(x)[1]
       print(c(b,e))
