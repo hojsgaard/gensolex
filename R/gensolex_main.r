@@ -77,8 +77,8 @@ gensolex <- function(file_name, compile=TRUE) {
       b <- x[1]
       e <- rev(x)[1]
       print(c(b,e))
-      lns_sol[[b]] <- "*SOLUTION comment*"
-      lns_sol[[e]] <- "*end of SOLUTION comment*"      
+      lns_sol[[b]] <- "*SOLUTION comment*\\n"
+      lns_sol[[e]] <- "\\n*end of SOLUTION comment*"      
   }
   lns_sol
   
@@ -94,8 +94,8 @@ gensolex <- function(file_name, compile=TRUE) {
   )
   
   cat(sprintf("Writing files:\n %s \n %s\n", exe_file, sol_file))
-  writeLines(c(extra, lns_no_sol), exe_file)
-  writeLines(c(extra, lns_sol), sol_file)
+  writeLines(c(lns_no_sol, extra), exe_file)
+  writeLines(c(lns_sol, extra), sol_file)
 
   ## if (require(rmarkdown)){
       if (compile){
