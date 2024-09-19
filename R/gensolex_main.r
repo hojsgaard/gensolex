@@ -47,7 +47,8 @@ gensolex <- function(file_name, compile=TRUE) {
   sol_text_begin
   
   sol_text_end <- grep("--->", lns)
-
+  sol_text_end
+  
   handle_sol_text <- function(i) {
     s <- sol_text_begin[i]
     beg <- s
@@ -98,8 +99,9 @@ gensolex <- function(file_name, compile=TRUE) {
 
   ## if (require(rmarkdown)){
       if (compile){
-          rmarkdown::render(exe_file)
-          rmarkdown::render(sol_file)
+        rmarkdown::render(file_name)
+        rmarkdown::render(exe_file)
+        rmarkdown::render(sol_file)
       }
   ## }
 }
