@@ -18,7 +18,8 @@ gensolex <- function(file_name, compile=TRUE) {
   
   ext  <- tools::file_ext(file_name)
   name <- tools::file_path_sans_ext(file_name)
-  ext
+  cat("extension:\n")
+  print(ext)
   name
   
   lns <- readLines(file_name)
@@ -97,11 +98,16 @@ gensolex <- function(file_name, compile=TRUE) {
   writeLines(c(lns_no_sol, extra), exe_file)
   writeLines(c(lns_sol, extra), sol_file)
 
+  if (identical(ext, "qmd")){
+      render_fun <- quarto::quarto_render
+  } else {
+      render_fun <- rmarkdown::render
+  }
   ## if (require(rmarkdown)){
       if (compile){
-        rmarkdown::render(file_name)
-        rmarkdown::render(exe_file)
-        rmarkdown::render(sol_file)
+        render_fun(file_name)
+        render_fun(exe_file)
+        render_fun(sol_file)
       }
   ## }
 }
