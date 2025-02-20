@@ -83,8 +83,8 @@ gensolex <- function(file_name, compile=TRUE) {
   }
   lns_sol
   
-  sol_file <- file.path(paste0(name, "_solution.", ext))
-  exe_file <- file.path(paste0(name, "_exercise.", ext))
+  sol_file <- file.path(paste0(name, "_sol.", ext))
+  exe_file <- file.path(paste0(name, "_exr.", ext))
   
   extra <- c(
     sprintf(
