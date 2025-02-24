@@ -12,7 +12,7 @@
 #' file_name <- system.file("example", "iris.rmd", package = "gensolex")
 #' 
 #' @export
-gensolex <- function(file_name, compile=TRUE) {
+gensolex0 <- function(file_name, compile=TRUE) {
   if (!file.exists(file_name))
     stop(cat(sprintf("fils %s does not exist\n")))
   
