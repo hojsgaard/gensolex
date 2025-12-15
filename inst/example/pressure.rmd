@@ -1,0 +1,55 @@
+---
+title: "Exercise"
+author: "Somebody"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## R Markdown
+
+
+
+Provide a summary of the pressure data.
+Output could look like this
+
+```{r, echo=F}
+summary(pressure)
+```
+
+```{r}
+## YOUR CODE
+```
+
+
+```{r cars}
+## SOLUTION
+summary(pressure)
+```
+
+
+
+
+## Including Plots
+
+
+Create the following plot:
+
+```{r, echo=FALSE}
+plot(pressure)
+```
+
+```{r}
+## YOUR CODE
+```
+
+```{r}
+## SOLUTION
+plot(pressure)
+```
+ 

@@ -1,0 +1,132 @@
+---
+title: "Exercise - some linear models part 1"
+author: "Søren Højsgaard"
+date: "`r date()`"
+format: 
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    number-depth: 5
+    self-contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height=3, warning=FALSE, message=FALSE,
+                      results="hide", fig.show="hide")
+```
+
+## Useful packages
+
+```{r}
+library(doBy)
+library(ggplot2) 
+library(broom)
+library(palmerpenguins)
+library(dplyr)
+library(patchwork)
+```
+
+## Mating songs of male crickets
+
+Walker (1962) studied the mating songs of male tree crickets. Each
+wingstroke by a cricket produces a pulse of song, and females may
+use the number of pulses per second to identify males of the
+correct species. Walker (1962) wanted to know whether the chirps
+of the crickets Oecanthus exclamationis (abbreviated exis) and
+Oecanthus niveus (abbreviated nius) had different pulse rates. See
+<https://www.biostathandbook.com/> for details.  (The
+abbreviations are made from the the first two and last two letters
+of the species.) He measured the pulse rate of the crickets
+(variable ‘pps’) at a variety of temperatures (‘temp’):
+  
+```{r}
+crickets |> head(3)
+crickets |> tail(3)
+```
+
+
+### Task 
+
+```{r, fig.show='asis'}
+pl1 <- crickets |> ggplot(aes(x=species, y=pps, color=species)) +
+    geom_boxplot()
+pl2 <- crickets |> ggplot(aes(x=pps, color=species)) +
+    geom_histogram() + facet_grid(~species)
+pl1 + pl2
+```
+
+1. Consider these plots. They suggest a very simple linear model for
+comparing the species (hint: think anova). Create such a model.
+Sanity check: You should find that the difference in `pps` is around $25$. 
+
+1. Create diagnostic plots of the model. Anything you worry about in
+the diagnostic plots?
+
+
+```{r}
+## noshow
+mm1 <- lm(pps~species, data=crickets)
+mm1 |> tidy()
+mm1 |> plot_lm()
+```
+
+
+### Task
+
+1. Create dataset `crickets2` containing data points where temp is larger
+than 20 and smaller than 27 (the reason for these limits become clear
+below).
+
+1. Produce the plot below. 
+
+1. Redo the steps above on this subset of data.  Sanity check: You should
+find that the difference in `pps` is around $11$.
+
+1. What do you make of the estimated difference in pps now compared with
+the results above?
+
+```{r, fig.show='asis'}
+## noshow
+crickets2 <- crickets |>
+    filter(temp > 20 & temp < 27)
+pl1 <- crickets2 |> ggplot(aes(x=species, y=pps, color=species)) +
+    geom_boxplot()
+pl2 <- crickets2 |> ggplot(aes(x=pps, color=species)) +
+    geom_histogram() + facet_grid(~species)
+pl1 + pl2
+```
+
+```{r}
+## noshow
+mm2 <- update(mm1, data=crickets2)
+mm2 |> tidy()
+mm2 |> plot_lm()
+```
+
+
+### Task
+
+1. Create the plot below based on all data. 
+
+1. Can you see why we focused only on data points where temp is
+between 20 and 27? 
+
+1. This plot should inspire you to a
+model (hint: think ancova). 
+
+1. What is the estimated difference in pps for the
+species?
+
+```{r, fig.show='asis'}
+## noshow
+crickets |> ggplot(aes(x=temp, y=pps, color=species)) +
+    geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+```{r}
+## noshow
+mm3 <- lm(pps ~ temp + species, data=crickets)
+mm3 |> tidy()
+mm3 |> plot_lm()
+```

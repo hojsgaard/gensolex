@@ -1,0 +1,63 @@
+---
+title: "Exercise and solutions"
+author: "Søren Højsgaard"
+date: "`r date()`"
+format: 
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    number-depth: 5
+    self-contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height=3, warning=FALSE, message=FALSE)
+```
+
+
+Produce this: code: yes; graphics: yes; output: yes, 
+
+```{r}
+x <- rnorm(20)
+x |> head()
+plot(x)
+```
+
+Produce this: code: (exr: no; sol: yes); graphics: yes; output: yes, 
+
+```{r}
+## noshow
+x <- rnorm(20)
+x |> head()
+plot(x)
+```
+
+Produce this: code: (exr: no; sol: yes); graphics: yes; output: no, 
+
+```{r, results="hide"}
+## noshow
+x <- rnorm(20)
+x |> head()
+plot(x)
+```
+
+Produce this: code: (exr: no; sol: yes); graphics: no; output: yes, 
+
+```{r, fig.show="hide"}
+## noshow
+x <- rnorm(20)
+x |> head()
+plot(x)
+```
+
+
+Produce this: code: (exr: no; sol: yes); graphics: no; output: yes, 
+
+```{r}
+## noshow
+x <- rnorm(20)
+x |> head()
+plot(x)
+```
+

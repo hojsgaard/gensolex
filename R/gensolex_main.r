@@ -20,12 +20,13 @@ gensolex0 <- function(file_name, compile=TRUE) {
   name <- tools::file_path_sans_ext(file_name)
   cat("extension:\n")
   print(ext)
-  name
+  ## name
   
   lns <- readLines(file_name)
-  
-  sol_lines <- grep("#+ *SOLUTION", lns)
+  ## print(lns)
+  sol_lines <- grep("## SOLUTION", lns)
   sol_lines
+  ## print(sol_lines)
   
   backtick_lines <- grep("```", lns)
   backtick_lines
@@ -35,16 +36,16 @@ gensolex0 <- function(file_name, compile=TRUE) {
     beg <- s - 1
     backtick_lines[which(backtick_lines > s)[1]]
     end <- backtick_lines[which(backtick_lines > s)[1]]
+    print(beg:end)
     beg:end
   }
   
   sol_code_chunks <-
     lapply(seq_along(sol_lines), function(i) {
-      handle_sol_code(i)
+        handle_sol_code(i)
     })
-  sol_code_chunks
 
-  sol_text_begin <- grep("<--- *SOLUTION", lns)
+  sol_text_begin <- grep("<--- SOLUTION", lns)
   sol_text_begin
   
   sol_text_end <- grep("--->", lns)
@@ -84,7 +85,7 @@ gensolex0 <- function(file_name, compile=TRUE) {
   lns_sol
   
   sol_file <- file.path(paste0(name, "_sol.", ext))
-  exe_file <- file.path(paste0(name, "_exr.", ext))
+  exr_file <- file.path(paste0(name, "_exr.", ext))
   
   extra <- c(
     sprintf(
@@ -94,8 +95,8 @@ gensolex0 <- function(file_name, compile=TRUE) {
     sprintf("<!-- time: %s do not edit manually -->\n", Sys.time())
   )
   
-  cat(sprintf("Writing files:\n %s \n %s\n", exe_file, sol_file))
-  writeLines(c(lns_no_sol, extra), exe_file)
+  cat(sprintf("Writing files:\n %s \n %s\n", exr_file, sol_file))
+  writeLines(c(lns_no_sol, extra), exr_file)
   writeLines(c(lns_sol, extra), sol_file)
 
   if (identical(ext, "qmd")){
@@ -106,7 +107,7 @@ gensolex0 <- function(file_name, compile=TRUE) {
   ## if (require(rmarkdown)){
       if (compile){
         render_fun(file_name)
-        render_fun(exe_file)
+        render_fun(exr_file)
         render_fun(sol_file)
       }
   ## }
